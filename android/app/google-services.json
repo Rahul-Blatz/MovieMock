@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "221448483995",
+    "firebase_url": "https://moviemock.firebaseio.com",
+    "project_id": "moviemock",
+    "storage_bucket": "moviemock.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221448483995:android:a9b28efae1b4a9f5d4823e",
+        "android_client_info": {
+          "package_name": "com.blatz.moviemock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221448483995-a8n5v2fki8gh5hce4oa0trgtepn6jadr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP5l8FMckMPVRP2q3TTucA0AwR04x8504"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221448483995-a8n5v2fki8gh5hce4oa0trgtepn6jadr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
