@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'pick_a_date_page.dart';
 
 class HomePage extends StatefulWidget {
   final movieListData;
@@ -30,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  print(widget.movieListData.length);
+                  print(widget.movieListData[1].genre);
                 },
               ),
             ),
@@ -42,7 +45,9 @@ class _HomePageState extends State<HomePage> {
                 size: 30,
                 color: Colors.black,
               ),
-              onPressed: () {},
+              onPressed: () {
+                print(widget.movieListData[1].genre);
+              },
             ),
           ],
           title: Center(
@@ -53,9 +58,94 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: Container(
-          color: Colors.grey.withOpacity(.1),
-          child: Center(
-            child: Text("HomePage"),
+          child: ListView.builder(
+            itemCount: widget.movieListData.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Card(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 5,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            child: Image.network(
+                              "http://image.tmdb.org/t/p/w92" +
+                                  widget.movieListData[index].posterPath,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "${widget.movieListData[index].title}",
+                              style: GoogleFonts.quicksand(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "${widget.movieListData[index].genre}",
+                              style: GoogleFonts.quicksand(
+                                  fontSize: 15, color: Colors.grey),
+                              overflow: TextOverflow.clip,
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            RaisedButton(
+                              color: Colors.blue,
+                              child: Text(
+                                "Book Tickets",
+                                style: GoogleFonts.quicksand(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PickADatePage(
+                                      movieId: widget.movieListData[index].id,
+                                      genre: widget.movieListData[index].genre,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

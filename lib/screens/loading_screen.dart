@@ -16,14 +16,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   getMovieData() async {
-    var movieData =
-        await MovieListModel().getMovieList().then((value) => value['results']);
-    Navigator.push(
+    var movieData = await MovieListModel().getMovieListData();
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => HomePage(movieData)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: Text("Loading Movies"),
+        ),
+      ),
+    );
   }
 }
