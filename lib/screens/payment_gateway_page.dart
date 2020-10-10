@@ -1,11 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moviemock/models/ticket_details.dart';
 
-class PaymentGatewayPage extends StatelessWidget {
+import 'payment_successfull_page.dart';
+
+class PaymentGatewayPage extends StatefulWidget {
   final ticketDetails;
 
   PaymentGatewayPage({this.ticketDetails});
+
+  @override
+  _PaymentGatewayPageState createState() => _PaymentGatewayPageState();
+}
+
+class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
+  PaymentMode paymentMode = PaymentMode.Credit;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,7 +67,7 @@ class PaymentGatewayPage extends StatelessWidget {
                             ),
                             child: Image.network(
                               "http://image.tmdb.org/t/p/w154" +
-                                  ticketDetails.posterPath,
+                                  widget.ticketDetails.posterPath,
                             ),
                           ),
                         ),
@@ -73,7 +83,7 @@ class PaymentGatewayPage extends StatelessWidget {
                               height: 10,
                             ),
                             Text(
-                              "${ticketDetails.movieName}",
+                              "${widget.ticketDetails.movieName}",
                               style: GoogleFonts.quicksand(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -83,7 +93,7 @@ class PaymentGatewayPage extends StatelessWidget {
                               height: 10,
                             ),
                             Text(
-                              "${ticketDetails.genre}",
+                              "${widget.ticketDetails.genre}",
                               style: GoogleFonts.quicksand(
                                   fontSize: 15, color: Colors.grey),
                               overflow: TextOverflow.clip,
@@ -99,7 +109,7 @@ class PaymentGatewayPage extends StatelessWidget {
                               backgroundColor:
                                   Colors.blueAccent.withOpacity(.3),
                               label: Text(
-                                "${ticketDetails.movieDate.toString().substring(0, 10)} - ${ticketDetails.movieTimings}",
+                                "${widget.ticketDetails.movieDate.toString().substring(0, 10)} - ${widget.ticketDetails.movieTimings}",
                                 style: GoogleFonts.quicksand(
                                   color: Colors.blueAccent,
                                   fontWeight: FontWeight.w500,
@@ -123,7 +133,7 @@ class PaymentGatewayPage extends StatelessWidget {
                               backgroundColor:
                                   Colors.orangeAccent.withOpacity(.3),
                               label: Text(
-                                "${ticketDetails.movieScreen}",
+                                "${widget.ticketDetails.movieScreen}",
                                 style: GoogleFonts.quicksand(
                                   color: Colors.orangeAccent,
                                   fontWeight: FontWeight.w500,
@@ -146,7 +156,7 @@ class PaymentGatewayPage extends StatelessWidget {
                               backgroundColor:
                                   Colors.greenAccent.withOpacity(.3),
                               label: Text(
-                                "${ticketDetails.movieLocation}",
+                                "${widget.ticketDetails.movieLocation}",
                                 style: GoogleFonts.quicksand(
                                   color: Colors.greenAccent,
                                   fontWeight: FontWeight.w500,
@@ -196,7 +206,7 @@ class PaymentGatewayPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Total Rs.${ticketDetails.seats.length * 230}",
+                          "Total Rs.${widget.ticketDetails.seats.length * 230}",
                           style: GoogleFonts.quicksand(
                             color: Colors.black,
                             fontSize: 26,
@@ -223,9 +233,109 @@ class PaymentGatewayPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(
+                                'Credit',
+                                style: GoogleFonts.quicksand(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              leading: Radio(
+                                value: PaymentMode.Credit,
+                                groupValue: paymentMode,
+                                onChanged: (value) {
+                                  setState(() {
+                                    paymentMode = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                'Debit',
+                                style: GoogleFonts.quicksand(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              leading: Radio(
+                                value: PaymentMode.Debit,
+                                groupValue: paymentMode,
+                                onChanged: (value) {
+                                  setState(() {
+                                    paymentMode = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                'UPI',
+                                style: GoogleFonts.quicksand(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              leading: Radio(
+                                value: PaymentMode.UPI,
+                                groupValue: paymentMode,
+                                onChanged: (value) {
+                                  setState(() {
+                                    paymentMode = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                     ],
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    widget.ticketDetails.setPaymentMode = paymentMode;
+                    print(widget.ticketDetails.paymentMode);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaymentSuccessfulPage()));
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 20,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      border: Border.all(color: Colors.blueAccent),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Pay Rs.${widget.ticketDetails.seats.length * 230} Only",
+                        style: GoogleFonts.quicksand(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
               ),
             ],
           ),
@@ -236,7 +346,7 @@ class PaymentGatewayPage extends StatelessWidget {
 
   List<Widget> ticketSeatsIcon() {
     List<Widget> seats = [];
-    for (int i = 0; i < ticketDetails.seats.length; i++) {
+    for (int i = 0; i < widget.ticketDetails.seats.length; i++) {
       Widget seat = new Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -252,7 +362,7 @@ class PaymentGatewayPage extends StatelessWidget {
                   color: Colors.blueAccent,
                 ),
                 Text(
-                  "${ticketDetails.seats[i].toString().substring(1, ticketDetails.seats[i].toString().length - 1)}",
+                  "${widget.ticketDetails.seats[i].toString().substring(1, widget.ticketDetails.seats[i].toString().length - 1)}",
                   style: GoogleFonts.quicksand(
                     color: Colors.blueAccent,
                     fontSize: 20,

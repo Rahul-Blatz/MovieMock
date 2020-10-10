@@ -1,3 +1,5 @@
+enum PaymentMode { Credit, Debit, UPI }
+
 class TicketDetails {
   final String movieName;
   final int movieId;
@@ -8,6 +10,7 @@ class TicketDetails {
   final String movieLocation;
   final String movieScreen;
   final String movieTimings;
+  PaymentMode paymentMode;
   List<String> seats = [];
 
   TicketDetails({
@@ -24,5 +27,9 @@ class TicketDetails {
 
   set setSeats(List<String> value) {
     this.seats = value;
+  }
+
+  set setPaymentMode(PaymentMode value) {
+    this.paymentMode = value;
   }
 }
