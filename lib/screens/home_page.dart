@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'pick_a_date_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   final movieListData;
@@ -50,11 +50,9 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ],
-          title: Center(
-            child: Text(
-              "Movie Mock Cinemas",
-              style: GoogleFonts.quicksand(color: Colors.black),
-            ),
+          title: Text(
+            "Movie Mock Cinemas",
+            style: GoogleFonts.quicksand(color: Colors.black),
           ),
         ),
         body: Container(

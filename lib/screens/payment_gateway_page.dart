@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moviemock/models/ticket_details.dart';
+import 'package:moviemock/screens/login_page.dart';
 
 import 'payment_successfull_page.dart';
 
@@ -16,6 +19,49 @@ class PaymentGatewayPage extends StatefulWidget {
 
 class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   PaymentMode paymentMode = PaymentMode.Credit;
+  bool isUploading = false;
+  CollectionReference userRef = FirebaseFirestore.instance.collection('users');
+//  String currentUser = FirebaseAuth.instance.currentUser.email;
+
+  initState() {
+    getUsers();
+    super.initState();
+  }
+
+  getUsers() {
+    userRef.get().then((snap) {
+      snap.docs.forEach((doc) {
+        print("Received from Firestore: ${doc.data()}");
+      });
+    });
+  }
+
+  Future<void> testFireStore() {
+    return userRef.add({
+      "email": "rahul",
+    }).then((value) => print("User Added"));
+  }
+
+  Future<void> createUserInFireStore() {
+    return userRef
+        .doc("rahul")
+        .collection("tickets")
+        .doc(widget.ticketDetails.movieId.toString())
+        .set({
+          "movieName": widget.ticketDetails.movieName,
+          "movieDate": widget.ticketDetails.movieDate,
+          "movieTimings": widget.ticketDetails.movieTimings,
+          "movieLocation": widget.ticketDetails.movieLocation,
+          "movieScreen": widget.ticketDetails.movieScreen,
+          "seats": widget.ticketDetails.seats.join(',').toString(),
+          "posterPath": widget.ticketDetails.posterPath,
+          "genre": widget.ticketDetails.genre,
+          "paymentMode": widget.ticketDetails.paymentMode.toString(),
+        })
+        .then((value) => print("Ticket Added"))
+        .catchError((error) => print("Failed to add: $error"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -308,10 +354,11 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
                   onTap: () {
                     widget.ticketDetails.setPaymentMode = paymentMode;
                     print(widget.ticketDetails.paymentMode);
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PaymentSuccessfulPage()));
+                    createUserInFireStore();
+//                    Navigator.pushReplacement(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) => PaymentSuccessfulPage()));
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width - 20,

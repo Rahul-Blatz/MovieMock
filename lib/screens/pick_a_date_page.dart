@@ -20,7 +20,7 @@ class PickADatePage extends StatefulWidget {
 }
 
 class _PickADatePageState extends State<PickADatePage> {
-  DateTime pickedDate;
+  DateTime pickedDate = DateTime.now();
   String pickedLocation = location[0];
   String pickedScreen = screens[0];
   String pickedTime = timings[0];
@@ -156,6 +156,7 @@ class _PickADatePageState extends State<PickADatePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Card(
                         child: CalendarDatePicker(
+                          currentDate: pickedDate,
                           initialDate: DateTime.now(),
                           firstDate: DateTime.now(),
                           lastDate: DateTime.now().add(

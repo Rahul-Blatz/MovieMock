@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:moviemock/screens/home_page.dart';
 import 'package:moviemock/screens/loading_screen.dart';
+import 'package:moviemock/screens/login_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,7 +34,25 @@ class LandingPage extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return LoadingScreen();
+          return StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                User user = snapshot.data;
+                print(snapshot.data);
+                if (user == null) {
+                  return LoginPage();
+                } else {
+                  return LoadingScreen();
+                }
+              }
+              return Scaffold(
+                body: Center(
+                  child: Text("Authenticating User..."),
+                ),
+              );
+            },
+          );
         }
 
         return Scaffold(
