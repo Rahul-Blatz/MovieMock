@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 enum PaymentMode { Credit, Debit, UPI }
 
 class TicketDetails {
@@ -24,6 +26,18 @@ class TicketDetails {
     this.movieScreen,
     this.movieTimings,
   });
+
+  factory TicketDetails.fromDocument(DocumentSnapshot data) {
+    return TicketDetails(
+      posterPath: data['posterPath'],
+      movieTimings: data['movieTimings'],
+      genre: data['genre'],
+      movieScreen: data['movieScreen'],
+      movieLocation: data['movieLocation'],
+      movieName: data['movieName'],
+      runTime: data['seats'].toString(),
+    );
+  }
 
   set setSeats(List<String> value) {
     this.seats = value;

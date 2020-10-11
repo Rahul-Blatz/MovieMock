@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +9,7 @@ import 'dart:convert';
 
 import 'package:moviemock/models/movie_details.dart';
 import 'package:moviemock/models/ticket_details.dart';
+import 'package:moviemock/screens/login_page.dart';
 import 'package:moviemock/screens/select_seats_page.dart';
 
 class PickADatePage extends StatefulWidget {
@@ -264,23 +266,32 @@ class _PickADatePageState extends State<PickADatePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        TicketDetails temp = new TicketDetails(
-                          movieId: snapshot.data.id,
-                          genre: snapshot.data.genre,
-                          runTime: snapshot.data.runTime.toString(),
-                          movieName: snapshot.data.title,
-                          movieDate: pickedDate,
-                          movieLocation: pickedLocation,
-                          movieScreen: pickedScreen,
-                          movieTimings: pickedTime,
-                          posterPath: snapshot.data.posterPath,
-                        );
+                        FirebaseAuth auth = FirebaseAuth.instance;
+                        if (auth.currentUser != null) {
+                          TicketDetails temp = new TicketDetails(
+                            movieId: snapshot.data.id,
+                            genre: snapshot.data.genre,
+                            runTime: snapshot.data.runTime.toString(),
+                            movieName: snapshot.data.title,
+                            movieDate: pickedDate,
+                            movieLocation: pickedLocation,
+                            movieScreen: pickedScreen,
+                            movieTimings: pickedTime,
+                            posterPath: snapshot.data.posterPath,
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SelectSeatsPage(
+                                userTicket: temp,
+                              ),
+                            ),
+                          );
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SelectSeatsPage(
-                              userTicket: temp,
-                            ),
+                            builder: (context) => LoginPage(),
                           ),
                         );
                       },

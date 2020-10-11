@@ -21,15 +21,15 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   PaymentMode paymentMode = PaymentMode.Credit;
   bool isUploading = false;
   CollectionReference userRef = FirebaseFirestore.instance.collection('users');
-//  String currentUser = FirebaseAuth.instance.currentUser.email;
+  String currentUser = FirebaseAuth.instance.currentUser.email;
 
   initState() {
     getUsers();
     super.initState();
   }
 
-  getUsers() {
-    userRef.get().then((snap) {
+  getUsers() async {
+    await userRef.get().then((snap) {
       snap.docs.forEach((doc) {
         print("Received from Firestore: ${doc.data()}");
       });
@@ -44,22 +44,27 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
 
   Future<void> createUserInFireStore() {
     return userRef
-        .doc("rahul")
+        .doc(currentUser)
         .collection("tickets")
         .doc(widget.ticketDetails.movieId.toString())
         .set({
-          "movieName": widget.ticketDetails.movieName,
-          "movieDate": widget.ticketDetails.movieDate,
-          "movieTimings": widget.ticketDetails.movieTimings,
-          "movieLocation": widget.ticketDetails.movieLocation,
-          "movieScreen": widget.ticketDetails.movieScreen,
-          "seats": widget.ticketDetails.seats.join(',').toString(),
-          "posterPath": widget.ticketDetails.posterPath,
-          "genre": widget.ticketDetails.genre,
-          "paymentMode": widget.ticketDetails.paymentMode.toString(),
-        })
-        .then((value) => print("Ticket Added"))
-        .catchError((error) => print("Failed to add: $error"));
+      "movieName": widget.ticketDetails.movieName,
+      "movieDate": widget.ticketDetails.movieDate,
+      "movieTimings": widget.ticketDetails.movieTimings,
+      "movieLocation": widget.ticketDetails.movieLocation,
+      "movieScreen": widget.ticketDetails.movieScreen,
+      "seats": widget.ticketDetails.seats.join(',').toString(),
+      "posterPath": widget.ticketDetails.posterPath,
+      "genre": widget.ticketDetails.genre,
+      "paymentMode": widget.ticketDetails.paymentMode.toString(),
+    }).whenComplete(
+      () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentSuccessfulPage(),
+        ),
+      ),
+    );
   }
 
   @override

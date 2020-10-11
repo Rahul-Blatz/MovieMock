@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moviemock/screens/user_tickets_page.dart';
 import 'pick_a_date_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -33,7 +35,12 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  print(widget.movieListData[1].genre);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserTicketsPage(),
+                    ),
+                  );
                 },
               ),
             ),
@@ -45,8 +52,8 @@ class _HomePageState extends State<HomePage> {
                 size: 30,
                 color: Colors.black,
               ),
-              onPressed: () {
-                print(widget.movieListData[1].genre);
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
               },
             ),
           ],
