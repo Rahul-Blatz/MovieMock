@@ -267,31 +267,31 @@ class _PickADatePageState extends State<PickADatePage> {
                     GestureDetector(
                       onTap: () {
                         FirebaseAuth auth = FirebaseAuth.instance;
-                        if (auth.currentUser != null) {
-                          TicketDetails temp = new TicketDetails(
-                            movieId: snapshot.data.id,
-                            genre: snapshot.data.genre,
-                            runTime: snapshot.data.runTime.toString(),
-                            movieName: snapshot.data.title,
-                            movieDate: pickedDate,
-                            movieLocation: pickedLocation,
-                            movieScreen: pickedScreen,
-                            movieTimings: pickedTime,
-                            posterPath: snapshot.data.posterPath,
-                          );
+                        if (auth.currentUser == null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SelectSeatsPage(
-                                userTicket: temp,
-                              ),
+                              builder: (context) => LoginPage(),
                             ),
                           );
                         }
+                        TicketDetails temp = new TicketDetails(
+                          movieId: snapshot.data.id,
+                          genre: snapshot.data.genre,
+                          runTime: snapshot.data.runTime.toString(),
+                          movieName: snapshot.data.title,
+                          movieDate: pickedDate,
+                          movieLocation: pickedLocation,
+                          movieScreen: pickedScreen,
+                          movieTimings: pickedTime,
+                          posterPath: snapshot.data.posterPath,
+                        );
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => SelectSeatsPage(
+                              userTicket: temp,
+                            ),
                           ),
                         );
                       },
