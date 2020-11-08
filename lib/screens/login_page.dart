@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:moviemock/widgets/FancyButton.dart';
 
 class LoginPage extends StatefulWidget {
@@ -40,16 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey.withOpacity(.8),
-//        appBar: AppBar(
-//          backgroundColor: Colors.white,
-//          elevation: 0.0,
-//          title: Text(
-//            "Login",
-//            style: GoogleFonts.quicksand(color: Colors.black),
-//          ),
-//          centerTitle: true,
-//        ),
+        backgroundColor: Colors.black,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -130,74 +120,18 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FancyButton(
-                  color: Colors.blueAccent,
+                  color: Color(0xff2828A1),
                   onPress: createUser,
                   label: 'Register',
                 ),
-//                GestureDetector(
-//                  onTap: createUser,
-//                  child: Container(
-////                    width: MediaQuery.of(context).size.width - 20,
-//                    height: 50,
-//                    decoration: BoxDecoration(
-//                      color: Colors.white,
-//                      borderRadius: BorderRadius.all(
-//                        Radius.circular(10),
-//                      ),
-//                      border: Border.all(color: Colors.blueAccent),
-//                    ),
-//                    child: Center(
-//                      child: Padding(
-//                        padding: const EdgeInsets.symmetric(
-//                          vertical: 8.0,
-//                          horizontal: 15,
-//                        ),
-//                        child: Text(
-//                          "Register",
-//                          style: GoogleFonts.quicksand(
-//                            fontSize: 20,
-//                          ),
-//                        ),
-//                      ),
-//                    ),
-//                  ),
-//                ),
                 SizedBox(
                   width: 20,
                 ),
                 FancyButton(
-                  color: Colors.blueAccent,
+                  color: Color(0xff2828A1),
                   onPress: login,
                   label: 'Login',
                 ),
-//                GestureDetector(
-//                  onTap: login,
-//                  child: Container(
-////                    width: MediaQuery.of(context).size.width - 20,
-//                    height: 50,
-//                    decoration: BoxDecoration(
-//                      color: Colors.white,
-//                      borderRadius: BorderRadius.all(
-//                        Radius.circular(10),
-//                      ),
-//                      border: Border.all(color: Colors.blueAccent),
-//                    ),
-//                    child: Center(
-//                      child: Padding(
-//                        padding: const EdgeInsets.symmetric(
-//                          vertical: 8.0,
-//                          horizontal: 15,
-//                        ),
-//                        child: Text(
-//                          "Login",
-//                          style: GoogleFonts.quicksand(
-//                            fontSize: 20,
-//                          ),
-//                        ),
-//                      ),
-//                    ),
-//                  ),
-//                ),
               ],
             ),
           ],
