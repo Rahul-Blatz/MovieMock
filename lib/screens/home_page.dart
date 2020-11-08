@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.search,
+                Icons.logout,
                 size: 30,
                 color: Colors.black,
               ),
@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                               height: 30,
                             ),
                             RaisedButton(
-                              color: Colors.blue,
+                              color: Color(0xff2828A1),
                               child: Text(
                                 "Book Tickets",
                                 style: GoogleFonts.quicksand(

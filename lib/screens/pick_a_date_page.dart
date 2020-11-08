@@ -11,6 +11,7 @@ import 'package:moviemock/models/movie_details.dart';
 import 'package:moviemock/models/ticket_details.dart';
 import 'package:moviemock/screens/login_page.dart';
 import 'package:moviemock/screens/select_seats_page.dart';
+import 'package:moviemock/widgets/FancyButton.dart';
 
 class PickADatePage extends StatefulWidget {
   final movieId;
@@ -157,18 +158,27 @@ class _PickADatePageState extends State<PickADatePage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Card(
-                        child: CalendarDatePicker(
-                          currentDate: pickedDate,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(
-                            Duration(days: 15),
+                        child: Theme(
+                          data: ThemeData(
+                            colorScheme: ColorScheme.light(
+                              primary: Color(0xff2828A1),
+                            ),
                           ),
-                          onDateChanged: (value) {
-                            setState(() {
-                              pickedDate = value;
-                            });
-                          },
+                          child: Builder(
+                            builder: (context) => new CalendarDatePicker(
+                              currentDate: pickedDate,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.now().add(
+                                Duration(days: 15),
+                              ),
+                              onDateChanged: (value) {
+                                setState(() {
+                                  pickedDate = value;
+                                });
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -264,62 +274,45 @@ class _PickADatePageState extends State<PickADatePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        FirebaseAuth auth = FirebaseAuth.instance;
-                        if (auth.currentUser == null) {
+                    Center(
+                      child: FancyButton(
+                        onPress: () {
+                          FirebaseAuth auth = FirebaseAuth.instance;
+                          if (auth.currentUser == null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            );
+                          }
+                          TicketDetails temp = new TicketDetails(
+                            movieId: snapshot.data.id,
+                            genre: snapshot.data.genre,
+                            runTime: snapshot.data.runTime.toString(),
+                            movieName: snapshot.data.title,
+                            movieDate: pickedDate,
+                            movieLocation: pickedLocation,
+                            movieScreen: pickedScreen,
+                            movieTimings: pickedTime,
+                            posterPath: snapshot.data.posterPath,
+                          );
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                          );
-                        }
-                        TicketDetails temp = new TicketDetails(
-                          movieId: snapshot.data.id,
-                          genre: snapshot.data.genre,
-                          runTime: snapshot.data.runTime.toString(),
-                          movieName: snapshot.data.title,
-                          movieDate: pickedDate,
-                          movieLocation: pickedLocation,
-                          movieScreen: pickedScreen,
-                          movieTimings: pickedTime,
-                          posterPath: snapshot.data.posterPath,
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SelectSeatsPage(
-                              userTicket: temp,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width - 80,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                            border: Border.all(color: Colors.blueAccent),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Select Seats",
-                              style: GoogleFonts.quicksand(
-                                fontSize: 20,
+                              builder: (context) => SelectSeatsPage(
+                                userTicket: temp,
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
+                        label: 'Select Seats',
+                        color: Color(0xff2828A1),
                       ),
                     ),
                     SizedBox(
                       height: 20,
-                    )
+                    ),
                   ],
                 ),
               );
@@ -333,3 +326,5 @@ class _PickADatePageState extends State<PickADatePage> {
     );
   }
 }
+
+class MyCalendarPicker extends CalendarDatePicker {}
